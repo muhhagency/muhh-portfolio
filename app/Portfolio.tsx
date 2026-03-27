@@ -329,15 +329,14 @@ function Hero() {
 // ─── Case study card ──────────────────────────────────────────────────────────
 interface Project { num: string; tag: string; title: string; description: string; metric: string; metricLabel: string; image?: string; }
 
-function CaseCard({ project, isLast }: { project: Project; isLast: boolean }) {
+function CaseCard({ project }: { project: Project }) {
   const [hovered, setHovered] = useState(false);
-  const { isMobile } = useBreakpoint();
   return (
     <div className="case-card" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
-      style={{ background: hovered ? C.bgHover : C.bgCard, borderTop: `0.5px solid ${C.p200}`, borderBottom: isLast ? `0.5px solid ${C.p200}` : "none", padding: isMobile ? "24px" : "28px 24px", display: "flex", flexDirection: "column", gap: "16px", cursor: "default", transition: "background 150ms ease", fontFamily: font, marginLeft: isMobile ? 0 : "-24px", marginRight: isMobile ? 0 : "-24px", borderRadius: "4px" }}
+      style={{ background: hovered ? C.bgHover : C.bgCard, border: `0.5px solid ${C.p200}`, borderRadius: "8px", padding: "0", display: "flex", flexDirection: "column", cursor: "default", transition: "background 150ms ease, transform 150ms ease, box-shadow 150ms ease", fontFamily: font, flexShrink: 0, width: "clamp(280px, 38vw, 420px)", overflow: "hidden", transform: hovered ? "translateY(-2px)" : "translateY(0)", boxShadow: hovered ? `0 8px 32px rgba(0,0,0,0.25)` : "none" }}
     >
       {/* Cover image */}
-      <div style={{ width: "100%", aspectRatio: "16/7", borderRadius: "4px", overflow: "hidden", background: C.p300, flexShrink: 0 }}>
+      <div style={{ width: "100%", aspectRatio: "16/9", overflow: "hidden", background: C.p300, flexShrink: 0 }}>
         {project.image
           ? <img src={project.image} alt={project.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
           : <div style={{ width: "100%", height: "100%", background: `linear-gradient(135deg, ${C.p300} 0%, ${C.p400} 100%)`, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -345,23 +344,13 @@ function CaseCard({ project, isLast }: { project: Project; isLast: boolean }) {
             </div>
         }
       </div>
-      {/* Content row */}
-      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 100px", gap: isMobile ? "12px" : "32px", alignItems: "start" }}>
-        <div>
-          <p style={{ ...s.tag, marginBottom: "10px" }}>{project.num} — {project.tag}</p>
-          <p style={{ fontSize: "17px", fontWeight: 500, letterSpacing: "-0.02em", color: C.p800, margin: "0 0 10px" }}>{project.title}</p>
-          <p style={{ fontSize: "13px", fontWeight: 400, lineHeight: 1.6, color: C.p600, margin: 0 }}>{project.description}</p>
-        </div>
-        {!isMobile && (
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", justifyContent: "space-between", height: "100%", paddingTop: "2px" }}>
-            <div style={{ textAlign: "right" }}>
-              {project.metric ? (<><p style={{ fontSize: "22px", fontWeight: 700, letterSpacing: "-0.03em", color: C.p800, margin: 0, lineHeight: 1.1 }}>{project.metric}</p><p style={{ ...s.tag, marginTop: "4px" }}>{project.metricLabel}</p></>) : <p style={{ ...s.tag, color: C.p400 }}>TBA</p>}
-            </div>
-            <span style={{ fontSize: "16px", color: C.p500, marginTop: "auto", paddingTop: "24px" }}>↗</span>
-          </div>
-        )}
+      {/* Content */}
+      <div style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "8px", flex: 1 }}>
+        <p style={{ ...s.tag, marginBottom: "2px" }}>{project.num} — {project.tag}</p>
+        <p style={{ fontSize: "15px", fontWeight: 500, letterSpacing: "-0.02em", color: C.p800, margin: 0, lineHeight: 1.4 }}>{project.title}</p>
+        <p style={{ fontSize: "13px", fontWeight: 400, lineHeight: 1.6, color: C.p600, margin: 0 }}>{project.description}</p>
+        <span style={{ fontSize: "13px", color: C.p500, marginTop: "auto", paddingTop: "12px" }}>↗ View project</span>
       </div>
-      {isMobile && <span style={{ fontSize: "14px", color: C.p500 }}>↗ View project</span>}
     </div>
   );
 }
@@ -398,13 +387,15 @@ function Work() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="work" style={{ width: "100%", background: C.bg, borderTop: `0.5px solid ${C.p200}`, display: "flex", justifyContent: "center" }}>
-      <div style={{ width: "100%", maxWidth: "1080px", padding: "96px clamp(20px,5vw,72px)", display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-        <p ref={labelRef} style={{ ...s.eyebrow, marginBottom: "40px" }}>Selected Work</p>
-        <div ref={cardsRef} style={{ width: "100%", display: "flex", flexDirection: "column" }}>
-          {projects.map((p, i) => <CaseCard key={p.num} project={p} isLast={i === projects.length - 1} />)}
+    <section ref={sectionRef} id="work" style={{ width: "100%", background: C.bg, borderTop: `0.5px solid ${C.p200}`, display: "flex", flexDirection: "column" }}>
+      <div style={{ width: "100%", padding: "96px 0 0", display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+        <p ref={labelRef} style={{ ...s.eyebrow, marginBottom: "40px", paddingLeft: "clamp(20px,5vw,72px)" }}>Selected Work</p>
+        <div ref={cardsRef} style={{ width: "100%", display: "flex", flexDirection: "row", gap: "16px", overflowX: "auto", paddingLeft: "clamp(20px,5vw,72px)", paddingRight: "clamp(20px,5vw,72px)", paddingBottom: "8px", scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
+          className="hide-scrollbar"
+        >
+          {projects.map((p) => <CaseCard key={p.num} project={p} />)}
         </div>
-        <div ref={footerRef} style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "20px", marginTop: "8px", flexWrap: "wrap", gap: "8px" }}>
+        <div ref={footerRef} style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px clamp(20px,5vw,72px) 96px", marginTop: "8px", flexWrap: "wrap", gap: "8px" }}>
           <p style={{ fontSize: "12px", color: C.p500, margin: 0 }}>Some projects are under NDA. Details available on request.</p>
           <a href="#" className="link-underline" style={{ fontSize: "13px", color: C.p600, fontFamily: font, fontWeight: 500, textDecoration: "none" }}>All projects →</a>
         </div>
@@ -588,7 +579,12 @@ export default function Portfolio() {
         .pulse-dot { position: relative; animation: pulse_dot 2s ease-in-out infinite; transform-origin: center; }
         .pulse-dot::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: #34c759; animation: pulse_ring 2s ease-out infinite; }
 
-        /* 8. Sliding underline */
+        /* 8. Hide scrollbar for horizontal scroll */
+        .hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .case-card { scroll-snap-align: start; }
+
+        /* 9. Sliding underline */
         .link-underline { position: relative; text-decoration: none !important; }
         .link-underline::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 0; height: 1px; background: currentColor; transition: width 0.2s ease; }
         .link-underline:hover::after { width: 100%; }
