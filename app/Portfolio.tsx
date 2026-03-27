@@ -327,28 +327,40 @@ function Hero() {
 }
 
 // ─── Case study card ──────────────────────────────────────────────────────────
-interface Project { num: string; tag: string; title: string; description: string; metric: string; metricLabel: string; }
+interface Project { num: string; tag: string; title: string; description: string; metric: string; metricLabel: string; image?: string; }
 
 function CaseCard({ project, isLast }: { project: Project; isLast: boolean }) {
   const [hovered, setHovered] = useState(false);
   const { isMobile } = useBreakpoint();
   return (
     <div className="case-card" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
-      style={{ background: hovered ? C.bgHover : C.bgCard, borderTop: `0.5px solid ${C.p200}`, borderBottom: isLast ? `0.5px solid ${C.p200}` : "none", padding: isMobile ? "24px" : "28px 24px", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 100px", gap: isMobile ? "12px" : "32px", alignItems: "start", cursor: "default", transition: "background 150ms ease", fontFamily: font, marginLeft: isMobile ? 0 : "-24px", marginRight: isMobile ? 0 : "-24px", borderRadius: "4px" }}
+      style={{ background: hovered ? C.bgHover : C.bgCard, borderTop: `0.5px solid ${C.p200}`, borderBottom: isLast ? `0.5px solid ${C.p200}` : "none", padding: isMobile ? "24px" : "28px 24px", display: "flex", flexDirection: "column", gap: "16px", cursor: "default", transition: "background 150ms ease", fontFamily: font, marginLeft: isMobile ? 0 : "-24px", marginRight: isMobile ? 0 : "-24px", borderRadius: "4px" }}
     >
-      <div>
-        <p style={{ ...s.tag, marginBottom: "10px" }}>{project.num} — {project.tag}</p>
-        <p style={{ fontSize: "17px", fontWeight: 500, letterSpacing: "-0.02em", color: C.p800, margin: "0 0 10px" }}>{project.title}</p>
-        <p style={{ fontSize: "13px", fontWeight: 400, lineHeight: 1.6, color: C.p600, margin: 0 }}>{project.description}</p>
+      {/* Cover image */}
+      <div style={{ width: "100%", aspectRatio: "16/7", borderRadius: "4px", overflow: "hidden", background: C.p300, flexShrink: 0 }}>
+        {project.image
+          ? <img src={project.image} alt={project.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+          : <div style={{ width: "100%", height: "100%", background: `linear-gradient(135deg, ${C.p300} 0%, ${C.p400} 100%)`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase", color: C.p600 }}>Cover coming soon</span>
+            </div>
+        }
       </div>
-      {!isMobile && (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", justifyContent: "space-between", height: "100%", paddingTop: "2px" }}>
-          <div style={{ textAlign: "right" }}>
-            {project.metric ? (<><p style={{ fontSize: "22px", fontWeight: 700, letterSpacing: "-0.03em", color: C.p800, margin: 0, lineHeight: 1.1 }}>{project.metric}</p><p style={{ ...s.tag, marginTop: "4px" }}>{project.metricLabel}</p></>) : <p style={{ ...s.tag, color: C.p400 }}>TBA</p>}
-          </div>
-          <span style={{ fontSize: "16px", color: C.p500, marginTop: "auto", paddingTop: "24px" }}>↗</span>
+      {/* Content row */}
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 100px", gap: isMobile ? "12px" : "32px", alignItems: "start" }}>
+        <div>
+          <p style={{ ...s.tag, marginBottom: "10px" }}>{project.num} — {project.tag}</p>
+          <p style={{ fontSize: "17px", fontWeight: 500, letterSpacing: "-0.02em", color: C.p800, margin: "0 0 10px" }}>{project.title}</p>
+          <p style={{ fontSize: "13px", fontWeight: 400, lineHeight: 1.6, color: C.p600, margin: 0 }}>{project.description}</p>
         </div>
-      )}
+        {!isMobile && (
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", justifyContent: "space-between", height: "100%", paddingTop: "2px" }}>
+            <div style={{ textAlign: "right" }}>
+              {project.metric ? (<><p style={{ fontSize: "22px", fontWeight: 700, letterSpacing: "-0.03em", color: C.p800, margin: 0, lineHeight: 1.1 }}>{project.metric}</p><p style={{ ...s.tag, marginTop: "4px" }}>{project.metricLabel}</p></>) : <p style={{ ...s.tag, color: C.p400 }}>TBA</p>}
+            </div>
+            <span style={{ fontSize: "16px", color: C.p500, marginTop: "auto", paddingTop: "24px" }}>↗</span>
+          </div>
+        )}
+      </div>
       {isMobile && <span style={{ fontSize: "14px", color: C.p500 }}>↗ View project</span>}
     </div>
   );
