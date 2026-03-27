@@ -353,13 +353,15 @@ function Work() {
     }
   }, []);
 
-  // Width: prev=10vw, active=60vw, next=30vw (minus gaps)
+  // Active card = 60vw minus the left padding so total visible = 60vw from left edge
+  // prev = 10vw, next = 30vw
   const gap = 12;
   const getWidth = (i: number) => {
     const diff = i - active;
-    if (diff === 0) return "60vw";
-    if (diff < 0)   return "10vw";
-    return "30vw";
+    if (diff === 0) return "calc(60vw - clamp(20px,5vw,72px))";
+    if (diff < 0)   return "calc(10vw - clamp(20px,5vw,72px) / 2)";
+    if (diff === 1) return "30vw";
+    return "20vw";
   };
 
   return (
