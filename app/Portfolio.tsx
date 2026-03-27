@@ -334,7 +334,7 @@ function CaseCard({ project, isLast }: { project: Project; isLast: boolean }) {
   const { isMobile } = useBreakpoint();
   return (
     <div className="case-card" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
-      style={{ background: hovered ? C.bgHover : C.bgCard, borderTop: `0.5px solid ${C.p200}`, borderBottom: isLast ? `0.5px solid ${C.p200}` : "none", padding: isMobile ? "24px 16px" : "28px 24px", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 100px", gap: isMobile ? "12px" : "32px", alignItems: "start", cursor: "default", transition: "background 150ms ease", fontFamily: font, marginLeft: isMobile ? 0 : "-24px", marginRight: isMobile ? 0 : "-24px", borderRadius: "4px" }}
+      style={{ background: hovered ? C.bgHover : C.bgCard, borderTop: `0.5px solid ${C.p200}`, borderBottom: isLast ? `0.5px solid ${C.p200}` : "none", padding: isMobile ? "24px" : "28px 24px", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 100px", gap: isMobile ? "12px" : "32px", alignItems: "start", cursor: "default", transition: "background 150ms ease", fontFamily: font, marginLeft: isMobile ? 0 : "-24px", marginRight: isMobile ? 0 : "-24px", borderRadius: "4px" }}
     >
       <div>
         <p style={{ ...s.tag, marginBottom: "10px" }}>{project.num} — {project.tag}</p>
@@ -387,7 +387,7 @@ function Work() {
 
   return (
     <section ref={sectionRef} id="work" style={{ width: "100%", background: C.bg, borderTop: `0.5px solid ${C.p200}`, display: "flex", justifyContent: "center" }}>
-      <div style={{ width: "100%", maxWidth: "1080px", padding: "96px clamp(24px,5vw,72px)", display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+      <div style={{ width: "100%", maxWidth: "1080px", padding: "96px clamp(20px,5vw,72px)", display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
         <p ref={labelRef} style={{ ...s.eyebrow, marginBottom: "40px" }}>Selected Work</p>
         <div ref={cardsRef} style={{ width: "100%", display: "flex", flexDirection: "column" }}>
           {projects.map((p, i) => <CaseCard key={p.num} project={p} isLast={i === projects.length - 1} />)}
