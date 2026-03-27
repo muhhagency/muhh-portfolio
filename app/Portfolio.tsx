@@ -402,6 +402,82 @@ function Work() {
   );
 }
 
+// ─── Recommendations ──────────────────────────────────────────────────────────
+const recommendations = [
+  { id: 1, initials: "FL", name: "First Last", title: "Senior PM @ Company", text: "Placeholder recommendation text. This is where a genuine LinkedIn recommendation will go. It speaks to the quality of work, collaboration, and impact delivered throughout the engagement." },
+  { id: 2, initials: "AB", name: "Alex Brown", title: "Head of Design @ Studio", text: "Placeholder recommendation text. Working together was a seamless experience — sharp thinking, clean execution, and a real understanding of what users actually need versus what they say they need." },
+  { id: 3, initials: "SC", name: "Sara Chen", title: "CTO @ Startup", text: "Placeholder recommendation text. Rare to find someone who bridges design and systems thinking this naturally. Every deliverable was grounded in logic and elevated by craft." },
+  { id: 4, initials: "MR", name: "Mohammed R.", title: "Founder @ Venture", text: "Placeholder recommendation text. The attention to detail and speed of iteration made a real difference. Delivered work that felt considered and purposeful at every level." },
+  { id: 5, initials: "JK", name: "Jamie Kim", title: "Product Lead @ Corp", text: "Placeholder recommendation text. An exceptional collaborator — proactive, thorough, and always asking the right questions before jumping to solutions." },
+];
+
+function Recommendations() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const labelRef   = useRef<HTMLParagraphElement>(null);
+  const headerRef  = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    const cards = sectionRef.current.querySelectorAll(".rec-card");
+
+    if (labelRef.current) {
+      gsap.fromTo(labelRef.current, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out", scrollTrigger: { trigger: sectionRef.current, start: "top 85%", once: true } });
+    }
+    if (headerRef.current) {
+      gsap.fromTo(headerRef.current, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out", scrollTrigger: { trigger: sectionRef.current, start: "top 80%", once: true } });
+    }
+    gsap.fromTo(cards, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: "power2.out", scrollTrigger: { trigger: sectionRef.current, start: "top 70%", once: true } });
+  }, []);
+
+  return (
+    <section ref={sectionRef} style={{ width: "100%", background: C.bg, borderTop: `0.5px solid ${C.p200}`, display: "flex", justifyContent: "center" }}>
+      <div style={{ width: "100%", maxWidth: "1080px", padding: "96px clamp(20px,5vw,72px)" }}>
+
+        {/* Header */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "8px" }}>
+          <p ref={labelRef} style={{ ...s.eyebrow }}>Kind Words</p>
+          <a href="https://linkedin.com/in/muhhesham" target="_blank" rel="noopener noreferrer" className="link-underline"
+            style={{ fontSize: "12px", color: C.p400, textDecoration: "none", fontFamily: font }}>
+            LinkedIn recommendations ↗
+          </a>
+        </div>
+        <div ref={headerRef}>
+          <p style={{ fontSize: "28px", fontWeight: 600, letterSpacing: "-0.025em", color: C.p900, margin: "12px 0 48px", fontFamily: font }}>What people say.</p>
+        </div>
+
+        {/* Cards grid */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "32px 24px" }}>
+          {recommendations.map(rec => (
+            <RecCard key={rec.id} rec={rec} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function RecCard({ rec }: { rec: typeof recommendations[0] }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div className="rec-card"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{ borderLeft: `0.5px solid ${hovered ? C.p400 : C.p300}`, padding: "0 0 0 20px", transition: "border-color 0.2s ease", fontFamily: font, opacity: 0 }}
+    >
+      <p style={{ fontSize: "14px", color: C.p600, lineHeight: 1.8, margin: 0 }}>{rec.text}</p>
+      <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "32px" }}>
+        <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: C.p300, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+          <span style={{ fontSize: "11px", fontWeight: 500, color: C.p700 }}>{rec.initials}</span>
+        </div>
+        <div>
+          <p style={{ fontSize: "13px", fontWeight: 500, color: C.p900, letterSpacing: "-0.01em", margin: 0 }}>{rec.name}</p>
+          <p style={{ fontSize: "11px", color: C.p400, marginTop: "2px", margin: 0 }}>{rec.title}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── About ────────────────────────────────────────────────────────────────────
 const facts = [
   { label: "Based in",       value: "Middle East · Available globally" },
@@ -599,6 +675,7 @@ export default function Portfolio() {
       >
         <Hero />
         <Work />
+        <Recommendations />
         <About />
         <Contact />
       </motion.main>
