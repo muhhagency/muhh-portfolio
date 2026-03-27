@@ -204,7 +204,11 @@ function Nav({ activeSection }: { activeSection: string }) {
         {!isMobile && (
           <div style={{ display: "flex", gap: "32px" }}>
             {links.map(({ label, id }) => (
-              <button key={id} onClick={() => scrollTo(id)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "14px", fontWeight: activeSection === id ? 500 : 400, color: activeSection === id ? C.p700 : C.p600, fontFamily: font, padding: 0, transition: "color 0.15s", lineHeight: 1 }}>
+              <button key={id} onClick={() => scrollTo(id)}
+                style={{ background: "none", border: "none", cursor: "pointer", fontSize: "14px", fontWeight: activeSection === id ? 500 : 400, color: activeSection === id ? C.p700 : C.p600, fontFamily: font, padding: 0, transition: "color 0.2s", lineHeight: 1 }}
+                onMouseEnter={e => (e.currentTarget.style.color = C.p900)}
+                onMouseLeave={e => (e.currentTarget.style.color = activeSection === id ? C.p700 : C.p600)}
+              >
                 {label}
               </button>
             ))}
@@ -219,7 +223,11 @@ function Nav({ activeSection }: { activeSection: string }) {
       {isMobile && menuOpen && (
         <div style={{ position: "fixed", top: "56px", left: 0, right: 0, zIndex: 99, background: "rgba(10,25,41,0.97)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", borderBottom: `0.5px solid ${C.p200}`, padding: "16px clamp(24px,5vw,72px) 24px", display: "flex", flexDirection: "column" }}>
           {links.map(({ label, id }) => (
-            <button key={id} onClick={() => scrollTo(id)} style={{ background: "none", border: "none", borderBottom: `0.5px solid ${C.p200}`, cursor: "pointer", fontSize: "16px", fontWeight: activeSection === id ? 500 : 400, color: activeSection === id ? C.p700 : C.p600, fontFamily: font, padding: "14px 0", textAlign: "left" }}>
+            <button key={id} onClick={() => scrollTo(id)}
+              style={{ background: "none", border: "none", borderBottom: `0.5px solid ${C.p200}`, cursor: "pointer", fontSize: "16px", fontWeight: activeSection === id ? 500 : 400, color: activeSection === id ? C.p700 : C.p600, fontFamily: font, padding: "14px 0", textAlign: "left", transition: "color 0.2s" }}
+              onMouseEnter={e => (e.currentTarget.style.color = C.p900)}
+              onMouseLeave={e => (e.currentTarget.style.color = activeSection === id ? C.p700 : C.p600)}
+            >
               {label}
             </button>
           ))}
