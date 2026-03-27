@@ -332,7 +332,7 @@ interface Project { num: string; tag: string; title: string; description: string
 function CaseCard({ project }: { project: Project }) {
   return (
     <div className="case-card"
-      style={{ background: C.bgCard, border: `0.5px solid ${C.p200}`, borderRadius: "12px", display: "flex", flexDirection: "column", fontFamily: font, flexShrink: 0, width: "85vw", maxWidth: "900px", minHeight: "60vh", overflow: "hidden" }}
+      style={{ background: C.bgCard, border: `0.5px solid ${C.p200}`, borderRadius: "12px", display: "flex", flexDirection: "column", fontFamily: font, flexShrink: 0, width: "calc(80vw - clamp(20px,5vw,72px))", maxWidth: "860px", minHeight: "60vh", overflow: "hidden" }}
     >
       {/* Cover image */}
       <div style={{ width: "100%", flex: 1, overflow: "hidden", background: C.p300, minHeight: "200px" }}>
@@ -389,7 +389,7 @@ function Work() {
     <section ref={sectionRef} id="work" style={{ width: "100%", background: C.bg, borderTop: `0.5px solid ${C.p200}`, display: "flex", flexDirection: "column" }}>
       <div style={{ width: "100%", padding: "96px 0 0", display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
         <p ref={labelRef} style={{ ...s.eyebrow, marginBottom: "40px", paddingLeft: "clamp(20px,5vw,72px)" }}>Selected Work</p>
-        <div ref={cardsRef} style={{ width: "100%", display: "flex", flexDirection: "row", gap: "16px", overflowX: "auto", scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch", paddingLeft: "clamp(20px,5vw,72px)", paddingRight: "clamp(20px,5vw,72px)", paddingBottom: "48px" }}
+        <div ref={cardsRef} style={{ width: "100%", display: "flex", flexDirection: "row", gap: "16px", overflowX: "auto", scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch", paddingLeft: "clamp(20px,5vw,72px)", paddingRight: "clamp(20px,5vw,72px)", paddingBottom: "48px", boxSizing: "border-box" }}
           className="hide-scrollbar"
         >
           {projects.map((p) => <CaseCard key={p.num} project={p} />)}
@@ -572,9 +572,9 @@ function Contact() {
   }, []);
 
   const socialLinks = [
-    { label: "LinkedIn",               href: "#" },
-    { label: "X (@muhhtweets)",        href: "#" },
-    { label: "Instagram (@muhhshots)", href: "#" },
+    { label: "LinkedIn",               href: "https://linkedin.com/in/muhhesham" },
+    { label: "X (@muhhtweets)",        href: "https://x.com/muhhtweets" },
+    { label: "Instagram (@muhhshots)", href: "https://instagram.com/muhhshots" },
   ];
 
   return (
@@ -593,7 +593,7 @@ function Contact() {
         </a>
         <div style={{ display: "flex", gap: "28px", flexWrap: "wrap", justifyContent: "center", marginBottom: "28px" }}>
           {socialLinks.map(({ label, href }) => (
-            <a key={label} href={href} className="link-underline" style={{ fontSize: "13px", color: C.p500, textDecoration: "none", fontFamily: font, transition: "color 0.15s" }}
+            <a key={label} href={href} target="_blank" rel="noopener noreferrer" className="link-underline" style={{ fontSize: "13px", color: C.p500, textDecoration: "none", fontFamily: font, transition: "color 0.15s" }}
               onMouseEnter={e => (e.currentTarget.style.color = C.p700)}
               onMouseLeave={e => (e.currentTarget.style.color = C.p500)}
             >
