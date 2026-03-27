@@ -329,32 +329,6 @@ function Hero() {
 // ─── Case study card ──────────────────────────────────────────────────────────
 interface Project { num: string; tag: string; title: string; description: string; metric: string; metricLabel: string; image?: string; }
 
-function CaseCard({ project }: { project: Project }) {
-  return (
-    <div className="case-card"
-      style={{ background: C.bgCard, border: `0.5px solid ${C.p200}`, borderRadius: "12px", display: "flex", flexDirection: "column", fontFamily: font, flexShrink: 0, width: "calc(100vw - clamp(20px,5vw,72px) - 10vw - 16px)", minHeight: "60vh", overflow: "hidden" }}
-    >
-      {/* Cover image */}
-      <div style={{ width: "100%", flex: 1, overflow: "hidden", background: C.p300, minHeight: "200px" }}>
-        {project.image
-          ? <img src={project.image} alt={project.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-          : <div style={{ width: "100%", height: "100%", background: `linear-gradient(135deg, ${C.p300} 0%, ${C.p400} 100%)`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase", color: C.p600 }}>Cover coming soon</span>
-            </div>
-        }
-      </div>
-      {/* Content */}
-      <div style={{ padding: "24px 28px", display: "flex", flexDirection: "column", gap: "8px", borderTop: `0.5px solid ${C.p200}` }}>
-        <p style={{ ...s.tag, marginBottom: "2px" }}>{project.num} — {project.tag}</p>
-        <p style={{ fontSize: "clamp(15px,1.6vw,18px)", fontWeight: 500, letterSpacing: "-0.02em", color: C.p800, margin: 0, lineHeight: 1.4 }}>{project.title}</p>
-        <p style={{ fontSize: "13px", fontWeight: 400, lineHeight: 1.6, color: C.p600, margin: 0 }}>{project.description}</p>
-        <span style={{ fontSize: "13px", color: C.p500, marginTop: "8px" }}>↗ View project</span>
-      </div>
-    </div>
-  );
-}
-
-// ─── Work ─────────────────────────────────────────────────────────────────────
 const projects: Project[] = [
   { num: "01", tag: "B2B SaaS · Healthcare · 2024",                        title: "Redesigning Medical Records Retrieval for Legal & Insurance Professionals",       description: "Ground-up redesign of the requestor portal used by law firms and insurance companies to request, track, and retrieve HIPAA-compliant medical records from a national provider network.", metric: "", metricLabel: "" },
   { num: "02", tag: "Enterprise · Internal Tooling · Fortune 100 · 2024",  title: "Modernizing an Enterprise Inventory System for a Fortune 100 Food Manufacturer", description: "Complete redesign of Tyson Foods' internal inventory platform — transforming a legacy system into a modern web app used by warehouse managers, plant operators, and supply chain teams across national facilities.", metric: "", metricLabel: "" },
@@ -363,38 +337,86 @@ const projects: Project[] = [
   { num: "05", tag: "Coming Soon",                                           title: "To be added",                                                                      description: "Details coming soon. Some projects are under NDA.", metric: "", metricLabel: "" },
 ];
 
+// ─── Work ─────────────────────────────────────────────────────────────────────
 function Work() {
   const sectionRef = useRef<HTMLElement>(null);
-  const cardsRef   = useRef<HTMLDivElement>(null);
   const labelRef   = useRef<HTMLParagraphElement>(null);
   const footerRef  = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
 
   useEffect(() => {
-    if (!sectionRef.current || !cardsRef.current) return;
-    const cards = cardsRef.current.querySelectorAll(".case-card");
-
-    // 10. Label fade
     if (labelRef.current) {
       gsap.fromTo(labelRef.current, { opacity: 0 }, { opacity: 1, duration: 0.8, ease: "power1.out", scrollTrigger: { trigger: labelRef.current, start: "top 85%", toggleActions: "play none none none", once: true } });
     }
-    // 3. Cards stagger reveal
-    gsap.fromTo(cards, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.15, ease: "power2.out", scrollTrigger: { trigger: sectionRef.current, start: "top 75%", toggleActions: "play none none none", once: true } });
-    // Footer
     if (footerRef.current) {
       gsap.fromTo(footerRef.current, { opacity: 0 }, { opacity: 1, duration: 0.8, ease: "power1.out", scrollTrigger: { trigger: footerRef.current, start: "top 90%", toggleActions: "play none none none", once: true } });
     }
   }, []);
 
+  // Width: prev=10vw, active=60vw, next=30vw (minus gaps)
+  const gap = 12;
+  const getWidth = (i: number) => {
+    const diff = i - active;
+    if (diff === 0) return "60vw";
+    if (diff < 0)   return "10vw";
+    return "30vw";
+  };
+
   return (
     <section ref={sectionRef} id="work" style={{ width: "100%", background: C.bg, borderTop: `0.5px solid ${C.p200}`, display: "flex", flexDirection: "column" }}>
-      <div style={{ width: "100%", padding: "96px 0 0", display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+      <div style={{ width: "100%", padding: "96px 0 0", display: "flex", flexDirection: "column" }}>
         <p ref={labelRef} style={{ ...s.eyebrow, marginBottom: "40px", paddingLeft: "clamp(20px,5vw,72px)" }}>Selected Work</p>
-        <div ref={cardsRef} style={{ width: "100%", display: "flex", flexDirection: "row", gap: "16px", overflowX: "auto", scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch", paddingLeft: "clamp(20px,5vw,72px)", paddingRight: "clamp(20px,5vw,72px)", paddingBottom: "48px", boxSizing: "border-box" }}
-          className="hide-scrollbar"
-        >
-          {projects.map((p) => <CaseCard key={p.num} project={p} />)}
+
+        {/* Carousel */}
+        <div style={{ width: "100%", overflow: "hidden", paddingLeft: "clamp(20px,5vw,72px)", boxSizing: "border-box" }}>
+          <div style={{ display: "flex", gap: `${gap}px`, transition: "all 0.45s ease", alignItems: "stretch" }}>
+            {projects.map((p, i) => {
+              const isActive = i === active;
+              const isPrev   = i < active;
+              return (
+                <div key={p.num} className="case-card"
+                  onClick={() => { if (!isActive) setActive(i); }}
+                  style={{
+                    flexShrink: 0,
+                    width: getWidth(i),
+                    minHeight: isActive ? "60vh" : "40vh",
+                    background: C.bgCard,
+                    border: `0.5px solid ${C.p200}`,
+                    borderRadius: "12px",
+                    overflow: "hidden",
+                    display: "flex",
+                    flexDirection: "column",
+                    transition: "width 0.45s ease, min-height 0.45s ease, opacity 0.45s ease",
+                    cursor: isActive ? "default" : "pointer",
+                    opacity: isActive ? 1 : isPrev ? 0.4 : 0.7,
+                    fontFamily: font,
+                  }}
+                >
+                  {/* Cover */}
+                  <div style={{ flex: 1, overflow: "hidden", background: C.p300, minHeight: 0 }}>
+                    {p.image
+                      ? <img src={p.image} alt={p.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                      : <div style={{ width: "100%", height: "100%", background: `linear-gradient(135deg, ${C.p300} 0%, ${C.p400} 100%)`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          {isActive && <span style={{ fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase", color: C.p600 }}>Cover coming soon</span>}
+                        </div>
+                    }
+                  </div>
+                  {/* Content — only shown when active */}
+                  {isActive && (
+                    <div style={{ padding: "24px 28px", display: "flex", flexDirection: "column", gap: "8px", borderTop: `0.5px solid ${C.p200}`, flexShrink: 0 }}>
+                      <p style={{ ...s.tag, marginBottom: "2px" }}>{p.num} — {p.tag}</p>
+                      <p style={{ fontSize: "clamp(15px,1.6vw,18px)", fontWeight: 500, letterSpacing: "-0.02em", color: C.p800, margin: 0, lineHeight: 1.4 }}>{p.title}</p>
+                      <p style={{ fontSize: "13px", fontWeight: 400, lineHeight: 1.6, color: C.p600, margin: 0 }}>{p.description}</p>
+                      <span style={{ fontSize: "13px", color: C.p500, marginTop: "8px" }}>↗ View project</span>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
-        <div style={{ padding: "0 clamp(20px,5vw,72px) 96px" }}>
+
+        <div style={{ padding: "24px clamp(20px,5vw,72px) 96px" }}>
           <p ref={footerRef} style={{ fontSize: "12px", color: C.p500, margin: 0 }}>Some projects are under NDA. Details available on request.</p>
         </div>
       </div>
