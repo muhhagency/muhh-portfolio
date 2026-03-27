@@ -561,6 +561,7 @@ export default function Portfolio() {
         *, *::before, *::after { box-sizing: border-box; }
         body { margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
+        ::selection { background: #3A6E99; color: #EEF5FA; }
         p { margin: 0; }
 
         /* 6. Availability dot pulse with ripple ring */
