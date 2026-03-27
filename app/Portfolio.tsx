@@ -212,6 +212,13 @@ function Nav({ activeSection }: { activeSection: string }) {
                 {label}
               </button>
             ))}
+            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer"
+              style={{ fontSize: "14px", fontWeight: 400, color: C.p600, fontFamily: font, textDecoration: "none", lineHeight: 1, transition: "color 0.2s" }}
+              onMouseEnter={e => (e.currentTarget.style.color = C.p900)}
+              onMouseLeave={e => (e.currentTarget.style.color = C.p600)}
+            >
+              Resume
+            </a>
           </div>
         )}
         {isMobile && (
@@ -231,6 +238,13 @@ function Nav({ activeSection }: { activeSection: string }) {
               {label}
             </button>
           ))}
+          <a href="/resume.pdf" target="_blank" rel="noopener noreferrer"
+            style={{ fontSize: "16px", fontWeight: 400, color: C.p600, fontFamily: font, textDecoration: "none", padding: "14px 0", borderBottom: `0.5px solid ${C.p200}`, transition: "color 0.2s" }}
+            onMouseEnter={e => (e.currentTarget.style.color = C.p900)}
+            onMouseLeave={e => (e.currentTarget.style.color = C.p600)}
+          >
+            Resume
+          </a>
         </div>
       )}
     </>
