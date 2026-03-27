@@ -332,7 +332,7 @@ interface Project { num: string; tag: string; title: string; description: string
 function CaseCard({ project }: { project: Project }) {
   return (
     <div className="case-card"
-      style={{ background: C.bgCard, border: `0.5px solid ${C.p200}`, borderRadius: "12px", display: "flex", flexDirection: "column", fontFamily: font, flexShrink: 0, width: "calc(80vw - clamp(20px,5vw,72px))", maxWidth: "860px", minHeight: "60vh", overflow: "hidden" }}
+      style={{ background: C.bgCard, border: `0.5px solid ${C.p200}`, borderRadius: "12px", display: "flex", flexDirection: "column", fontFamily: font, flexShrink: 0, width: "calc(100vw - clamp(20px,5vw,72px) - 10vw - 16px)", minHeight: "60vh", overflow: "hidden" }}
     >
       {/* Cover image */}
       <div style={{ width: "100%", flex: 1, overflow: "hidden", background: C.p300, minHeight: "200px" }}>
