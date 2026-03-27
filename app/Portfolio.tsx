@@ -332,10 +332,10 @@ interface Project { num: string; tag: string; title: string; description: string
 function CaseCard({ project }: { project: Project }) {
   return (
     <div className="case-card"
-      style={{ background: C.bgCard, display: "flex", flexDirection: "column", fontFamily: font, flexShrink: 0, width: "100vw", minHeight: "70vh", overflow: "hidden" }}
+      style={{ background: C.bgCard, border: `0.5px solid ${C.p200}`, borderRadius: "12px", display: "flex", flexDirection: "column", fontFamily: font, flexShrink: 0, width: "85vw", maxWidth: "900px", minHeight: "60vh", overflow: "hidden" }}
     >
       {/* Cover image */}
-      <div style={{ width: "100%", flex: 1, overflow: "hidden", background: C.p300, minHeight: "0" }}>
+      <div style={{ width: "100%", flex: 1, overflow: "hidden", background: C.p300, minHeight: "200px" }}>
         {project.image
           ? <img src={project.image} alt={project.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
           : <div style={{ width: "100%", height: "100%", background: `linear-gradient(135deg, ${C.p300} 0%, ${C.p400} 100%)`, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -344,10 +344,10 @@ function CaseCard({ project }: { project: Project }) {
         }
       </div>
       {/* Content */}
-      <div style={{ padding: "clamp(20px,4vw,40px) clamp(20px,5vw,72px)", display: "flex", flexDirection: "column", gap: "8px", borderTop: `0.5px solid ${C.p200}` }}>
+      <div style={{ padding: "24px 28px", display: "flex", flexDirection: "column", gap: "8px", borderTop: `0.5px solid ${C.p200}` }}>
         <p style={{ ...s.tag, marginBottom: "2px" }}>{project.num} — {project.tag}</p>
-        <p style={{ fontSize: "clamp(16px,2vw,20px)", fontWeight: 500, letterSpacing: "-0.02em", color: C.p800, margin: 0, lineHeight: 1.4 }}>{project.title}</p>
-        <p style={{ fontSize: "13px", fontWeight: 400, lineHeight: 1.6, color: C.p600, margin: 0, maxWidth: "640px" }}>{project.description}</p>
+        <p style={{ fontSize: "clamp(15px,1.6vw,18px)", fontWeight: 500, letterSpacing: "-0.02em", color: C.p800, margin: 0, lineHeight: 1.4 }}>{project.title}</p>
+        <p style={{ fontSize: "13px", fontWeight: 400, lineHeight: 1.6, color: C.p600, margin: 0 }}>{project.description}</p>
         <span style={{ fontSize: "13px", color: C.p500, marginTop: "8px" }}>↗ View project</span>
       </div>
     </div>
@@ -389,14 +389,13 @@ function Work() {
     <section ref={sectionRef} id="work" style={{ width: "100%", background: C.bg, borderTop: `0.5px solid ${C.p200}`, display: "flex", flexDirection: "column" }}>
       <div style={{ width: "100%", padding: "96px 0 0", display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
         <p ref={labelRef} style={{ ...s.eyebrow, marginBottom: "40px", paddingLeft: "clamp(20px,5vw,72px)" }}>Selected Work</p>
-        <div ref={cardsRef} style={{ width: "100%", display: "flex", flexDirection: "row", overflowX: "auto", scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
+        <div ref={cardsRef} style={{ width: "100%", display: "flex", flexDirection: "row", gap: "16px", overflowX: "auto", scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch", paddingLeft: "clamp(20px,5vw,72px)", paddingRight: "clamp(20px,5vw,72px)", paddingBottom: "48px" }}
           className="hide-scrollbar"
         >
           {projects.map((p) => <CaseCard key={p.num} project={p} />)}
         </div>
-        <div ref={footerRef} style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px clamp(20px,5vw,72px) 96px", marginTop: "8px", flexWrap: "wrap", gap: "8px" }}>
-          <p style={{ fontSize: "12px", color: C.p500, margin: 0 }}>Some projects are under NDA. Details available on request.</p>
-          <a href="#" className="link-underline" style={{ fontSize: "13px", color: C.p600, fontFamily: font, fontWeight: 500, textDecoration: "none" }}>All projects →</a>
+        <div style={{ padding: "0 clamp(20px,5vw,72px) 96px" }}>
+          <p ref={footerRef} style={{ fontSize: "12px", color: C.p500, margin: 0 }}>Some projects are under NDA. Details available on request.</p>
         </div>
       </div>
     </section>
